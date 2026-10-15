@@ -17,6 +17,7 @@
   var box = document.getElementsByTagName('div')[0];
   box.style.color = '#' + (q.get('cor') || '2B3440');
   box.style.fontSize = (q.get('tam') || '16') + 'px';
+  if (q.get('fundo')) { document.documentElement.style.background = document.body.style.background = '#' + q.get('fundo'); }
 
   function hojeBR() {
     var h = q.get('hoje'); // teste: ?hoje=2026-10-17

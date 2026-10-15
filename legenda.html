@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;height:100%;display:flex;align-items:flex-start;justify-content:center;background:transparent}
+  div{padding:4px 8px;font-family:Arial,sans-serif;line-height:1.35;text-align:left}
+  p{margin:3px 0}
+  .h{font-weight:600;margin-bottom:6px}
+</style>
+<div id="box">
+  <p class="h">Legenda dos indicadores</p>
+  <p><b>Loja:</b> variação YoY do fluxo de entradas da loja selecionada</p>
+  <p><b>Shopping:</b> variação YoY do fluxo agregado do shopping da loja</p>
+  <p><b>Rede:</b> variação YoY do fluxo agregado das lojas da rede em shoppings</p>
+  <p><b>Varejo:</b> <span id="v"></span></p>
+</div>
+<script>
+  var q = new URLSearchParams(location.search);
+  var box = document.getElementById('box');
+  box.style.color = '#' + (q.get('cor') || '2B3440');
+  box.style.fontSize = (q.get('tam') || '12') + 'px';
+  if (q.get('fundo')) { document.documentElement.style.background = document.body.style.background = '#' + q.get('fundo'); }
+  var fech = +(q.get('fech') || 10); // dia do mês em que o IICV fecha
+
+  function hojeBR() {
+    var h = q.get('hoje'); // teste: ?hoje=2026-10-09
+    if (h) { var p = h.split('-'); return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); }
+    var f = new Intl.DateTimeFormat('en-CA', {timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'})
+      .format(new Date()).split('-');
+    return new Date(Date.UTC(+f[0], +f[1] - 1, +f[2]));
+  }
+
+  var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var hoje = hojeBR();
+  var recuo = hoje.getUTCDate() >= fech ? 1 : 2; // antes do fechamento, o último mês disponível é o anterior ao anterior
+  var ref = new Date(Date.UTC(hoje.getUTCFullYear(), hoje.getUTCMonth() - recuo, 1));
+  var mes = MESES[ref.getUTCMonth()], ano = ref.getUTCFullYear();
+  document.getElementById('v').textContent =
+    'IICV de ' + mes + '/' + ano + ' (mês fechado, atualizado todo dia ' + fech + '), variação sobre ' + mes + '/' + (ano - 1);
+</script>
