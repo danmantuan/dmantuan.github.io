@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;background:transparent}
+  p{margin:0;font-family:Arial,sans-serif;font-weight:600}
+</style>
+<p id="t"></p>
+<script>
+  var q = new URLSearchParams(location.search);
+  var el = document.getElementById('t');
+  el.style.color = '#' + (q.get('cor') || '2B3440');
+  el.style.fontSize = (q.get('tam') || '16') + 'px';
+
+  function hojeBR() {
+    var h = q.get('hoje'); // teste: ?hoje=2026-10-17
+    if (h) { var p = h.split('-'); return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); }
+    var f = new Intl.DateTimeFormat('en-CA', {timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'})
+      .format(new Date()).split('-');
+    return new Date(Date.UTC(+f[0], +f[1] - 1, +f[2]));
+  }
+  function fmt(d) {
+    return String(d.getUTCDate()).padStart(2, '0') + '/' + String(d.getUTCMonth() + 1).padStart(2, '0') + '/' + d.getUTCFullYear();
+  }
+
+  var hoje = hojeBR();
+  var dow = (hoje.getUTCDay() + 6) % 7; // segunda = 0
+  var ini = new Date(hoje.getTime() - (dow + 10) * 86400000); // sexta da semana THIS - 2
+  var fim = new Date(ini.getTime() + 6 * 86400000);
+  el.textContent = 'Análise referente aos dias entre ' + fmt(ini) + ' e ' + fmt(fim);
+</script>
