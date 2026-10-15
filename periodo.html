@@ -2,14 +2,21 @@
 <meta charset="utf-8">
 <style>
   html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;background:transparent}
-  p{margin:0;font-family:Arial,sans-serif;font-weight:600}
+  div{padding:0 8px;font-family:Arial,sans-serif}
+  p{margin:0}
+  #t{font-weight:600}
+  #y{margin-top:4px;font-weight:400;font-size:.85em;opacity:.75}
 </style>
-<p id="t"></p>
+<div>
+  <p id="t"></p>
+  <p id="y"></p>
+</div>
 <script>
   var q = new URLSearchParams(location.search);
   var el = document.getElementById('t');
-  el.style.color = '#' + (q.get('cor') || '2B3440');
-  el.style.fontSize = (q.get('tam') || '16') + 'px';
+  var box = document.getElementsByTagName('div')[0];
+  box.style.color = '#' + (q.get('cor') || '2B3440');
+  box.style.fontSize = (q.get('tam') || '16') + 'px';
 
   function hojeBR() {
     var h = q.get('hoje'); // teste: ?hoje=2026-10-17
@@ -27,4 +34,5 @@
   var ini = new Date(hoje.getTime() - (dow + 10) * 86400000); // sexta da semana THIS - 2
   var fim = new Date(ini.getTime() + 6 * 86400000);
   el.textContent = 'Performance do período de ' + fmt(ini) + ' (sexta-feira) a ' + fmt(fim) + ' (quinta-feira)';
+  document.getElementById('y').textContent = 'Variação sobre o mesmo período do ano anterior (YoY)';
 </script>
