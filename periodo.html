@@ -26,5 +26,5 @@
   var dow = (hoje.getUTCDay() + 6) % 7; // segunda = 0
   var ini = new Date(hoje.getTime() - (dow + 10) * 86400000); // sexta da semana THIS - 2
   var fim = new Date(ini.getTime() + 6 * 86400000);
-  el.textContent = 'Análise referente aos dias entre ' + fmt(ini) + ' e ' + fmt(fim);
+  el.textContent = 'Performance do período de ' + fmt(ini) + ' (sexta-feira) a ' + fmt(fim) + ' (quinta-feira)';
 </script>
